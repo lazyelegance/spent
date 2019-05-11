@@ -10,15 +10,18 @@ class FirestoreService {
   Stream<List<Expense>> getExpenses() {
     return fireStore.collection('expenses').snapshots().map((snapshot) {
       return snapshot.documents.map((doc) {
-        int intAmount = doc['amount'];
-        double amount = intAmount.toDouble();
-
         return Expense(
             expenseId: doc.documentID,
             name: doc['name'],
-            amount: amount,
+            amount: doc['amount'],
             category: doc['category']);
       }).toList();
     });
+  }
+
+  void addExpense(String name, String amount, String category) {
+    fireStore
+        .collection('expenses')
+        .add({'name': name, 'amount': amount, 'category': category});
   }
 }

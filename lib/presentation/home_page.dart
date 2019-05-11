@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spent/containers/expenses_containder.dart';
+import 'package:spent/presentation/AddExpensePage.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -16,21 +17,14 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Spent',
-            ),
-            ExpensesListContainer(
-              key: Key('expensesListContainer'),
-            )
-          ],
-        ),
+      body: ExpensesListContainer(
+        key: Key('expensesListContainer'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AddExpensePage()));
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

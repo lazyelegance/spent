@@ -10,6 +10,22 @@ import 'package:spent/services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:redux_logging/redux_logging.dart';
 
+const MaterialColor white = const MaterialColor(
+  0xFFFFFFFF,
+  const <int, Color>{
+    50: const Color(0xFFFFFFFF),
+    100: const Color(0xFFFFFFFF),
+    200: const Color(0xFFFFFFFF),
+    300: const Color(0xFFFFFFFF),
+    400: const Color(0xFFFFFFFF),
+    500: const Color(0xFFFFFFFF),
+    600: const Color(0xFFFFFFFF),
+    700: const Color(0xFFFFFFFF),
+    800: const Color(0xFFFFFFFF),
+    900: const Color(0xFFFFFFFF),
+  },
+);
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -41,9 +57,28 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Spent',
         theme: ThemeData(
-          fontFamily: 'Fira Mono',
-          primarySwatch: Colors.blueGrey,
-        ),
+            fontFamily: 'Fira Mono',
+            primarySwatch: white,
+            cursorColor: Colors.black,
+            inputDecorationTheme: InputDecorationTheme(
+              labelStyle: TextStyle(color: Colors.black, fontSize: 16),
+              hintStyle: TextStyle(color: Colors.black54, fontSize: 16),
+              errorStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic),
+              border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black)),
+              enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black)),
+              disabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black)),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black)),
+              errorBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red)),
+              errorMaxLines: 2,
+            )),
         home: HomePage(title: 'Spent'),
       ),
     );
