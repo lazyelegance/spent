@@ -18,7 +18,7 @@ class ExpensesListContainer extends StatelessWidget {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            _buildText(vm),
+            _buildTotal(vm),
             Expanded(
               child: ExpensesList(
                 expenses: vm.expenses,
@@ -30,7 +30,7 @@ class ExpensesListContainer extends StatelessWidget {
     );
   }
 
-  Widget _buildText(_ViewModel vm) => Container(
+  Widget _buildTotal(_ViewModel vm) => Container(
         padding: EdgeInsets.symmetric(vertical: 30),
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
@@ -38,7 +38,7 @@ class ExpensesListContainer extends StatelessWidget {
               border: Border.all(width: 1, color: Colors.blueGrey),
               borderRadius: BorderRadius.circular(5)),
           child: Text(
-            '\$${vm.total.toString()}',
+            '\$${vm.total.toStringAsFixed(2)}',
             style: TextStyle(fontSize: 18),
           ),
         ),

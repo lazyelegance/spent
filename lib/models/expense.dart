@@ -1,5 +1,8 @@
+import 'package:spent/models/category.dart';
+
 class Expense {
-  final String expenseId, name, category;
+  final String expenseId, name;
+  final Category category;
   final String amount;
 
   Expense({this.expenseId, this.name, this.category, this.amount});

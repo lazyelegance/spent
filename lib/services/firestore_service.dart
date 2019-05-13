@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:spent/models/category.dart';
 import 'package:spent/models/expense.dart';
 
 class FirestoreService {
@@ -14,14 +15,18 @@ class FirestoreService {
             expenseId: doc.documentID,
             name: doc['name'],
             amount: doc['amount'],
-            category: doc['category']);
+            category: Category(name: doc['category']));
       }).toList();
     });
   }
 
-  void addExpense(String name, String amount, String category) {
-    fireStore
-        .collection('expenses')
-        .add({'name': name, 'amount': amount, 'category': category});
+  void addExpense(
+      String name, String amount, String category, DateTime expenseDate) {
+    fireStore.collection('expenses').add({
+      'name': name,
+      'amount': amount,
+      'category': category,
+      'expenseDate': expenseDate
+    });
   }
 }

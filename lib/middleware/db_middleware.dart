@@ -29,7 +29,8 @@ Middleware<AppState> _createAddExpense(FirestoreService firestoreService) {
   return (Store store, action, NextDispatcher next) {
     next(action);
 
-    firestoreService.addExpense(action.name, action.amount, action.category);
+    firestoreService.addExpense(
+        action.name, action.amount, action.category, action.expenseDate);
     Future.delayed(Duration(milliseconds: 1500), () {
       store.dispatch(AddExpenseSuccess());
       action.navigator.goBack();

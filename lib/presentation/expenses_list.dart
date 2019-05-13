@@ -39,7 +39,7 @@ class ExpensesList extends StatelessWidget {
                 ),
               ],
             ),
-            Text(expense.category)
+            Text(expense.category.name)
           ],
         ),
       );

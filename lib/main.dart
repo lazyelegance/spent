@@ -60,6 +60,8 @@ class _MyAppState extends State<MyApp> {
             fontFamily: 'Fira Mono',
             primarySwatch: white,
             cursorColor: Colors.black,
+            accentColor: Colors.black,
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.accent),
             inputDecorationTheme: InputDecorationTheme(
               labelStyle: TextStyle(color: Colors.black, fontSize: 16),
               hintStyle: TextStyle(color: Colors.black54, fontSize: 16),

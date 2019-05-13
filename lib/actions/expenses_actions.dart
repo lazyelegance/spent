@@ -11,9 +11,15 @@ class LoadExpenses {
 
 class AddExpense {
   final String name, category, amount;
+  final DateTime expenseDate;
   final LocalNavigator navigator;
 
-  AddExpense({this.name, this.category, this.amount, this.navigator});
+  AddExpense(
+      {this.name,
+      this.category,
+      this.amount,
+      this.expenseDate,
+      this.navigator});
 }
 
 class AddExpenseSuccess {}

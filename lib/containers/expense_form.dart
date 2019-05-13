@@ -3,9 +3,20 @@ import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:spent/actions/expenses_actions.dart';
 import 'package:spent/models/app_state.dart';
+import 'package:spent/models/category.dart';
 import 'package:spent/navigation/navigation.dart';
+import 'package:spent/utils/date_time.dart';
 
-enum Category { Food, Entertainment, Rent, Travel }
+//TODO: Move this
+List<Category> defaultCategories = [
+  Category(name: 'Food', icon: '🍕'),
+  Category(name: 'Groceries', icon: '🛒'),
+  Category(name: 'Rent', icon: '🏠'),
+  Category(name: 'Travel', icon: '🚌'),
+  Category(name: 'Entertainment', icon: '🎫'),
+  Category(name: 'Other', icon: '🎱'),
+  Category(name: 'Add', icon: '➕')
+];
 
 class ExpenseForm extends StatefulWidget {
   ExpenseForm({Key key}) : super(key: key);
@@ -16,8 +27,23 @@ class ExpenseForm extends StatefulWidget {
 class _ExpenseFormState extends State<ExpenseForm> {
   String _name = '';
   String _amount = '0';
-  String _category = '';
+  String _category = defaultCategories[0].name;
+  DateTime selectedDate = DateTime.now();
+  bool showCategoryFields = false;
   final _formKey = GlobalKey<FormState>();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2018, 8),
+      lastDate: DateTime(2030),
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +59,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    labelText: 'Name',
+                    labelText: 'Detail',
                   ),
                   onSaved: (String value) {
                     this._name = value;
@@ -50,15 +76,44 @@ class _ExpenseFormState extends State<ExpenseForm> {
                     this._amount = value;
                   },
                 ),
-                TextFormField(
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                    labelText: 'Category',
-                  ),
-                  onSaved: (String value) {
-                    this._category = value;
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                ),
+                RaisedButton(
+                  onPressed: () => _selectDate(context),
+                  child: Text('Expense Date: ${formatDate(selectedDate)}'),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                ),
+                DropdownButton(
+                  value: _category,
+                  onChanged: (String newValue) {
+                    if (newValue == 'Add') {
+                      setState(() {
+                        showCategoryFields = true;
+                      });
+                    } else {
+                      setState(() {
+                        _category = newValue;
+                        showCategoryFields = false;
+                      });
+                    }
                   },
-                  cursorColor: Colors.black,
+                  items: defaultCategories.map((category) {
+                    return DropdownMenuItem(
+                      value: category.name,
+                      child: Row(
+                        children: <Widget>[
+                          Text(category.icon),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                          ),
+                          Text(category.name),
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
@@ -69,7 +124,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                     // FIXME: disable button before
                     if (_name != null && _name != '' && _category != '') {
                       vm.addExpenseAction(_name, _amount, _category,
-                          LocalNavigator(Navigator.of(context)));
+                          selectedDate, LocalNavigator(Navigator.of(context)));
                     }
                   },
                   child: Text('Add'),
@@ -91,11 +146,12 @@ class _ViewModel {
   static _ViewModel fromStore(Store<AppState> store) {
     return new _ViewModel(
       addExpenseAction: (String name, String amount, String category,
-          LocalNavigator navigator) {
+          DateTime expenseDate, LocalNavigator navigator) {
         store.dispatch(AddExpense(
             name: name,
             amount: amount,
             category: category,
+            expenseDate: expenseDate,
             navigator: navigator));
       },
     );
