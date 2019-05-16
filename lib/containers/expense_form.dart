@@ -90,9 +90,31 @@ class _ExpenseFormState extends State<ExpenseForm> {
                   value: _category,
                   onChanged: (String newValue) {
                     if (newValue == 'Add') {
-                      setState(() {
-                        showCategoryFields = true;
-                      });
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: Text('add a new Category'),
+                              content: TextField(
+                                decoration: new InputDecoration(
+                                    labelText: "Category Name"),
+                                onChanged: (String text) {
+                                  //
+                                },
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('Cancel'.toUpperCase()),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                                FlatButton(
+                                  child: Text('Add'.toUpperCase()),
+                                  onPressed: () {
+                                    // add
+                                  },
+                                ),
+                              ],
+                            ),
+                      );
                     } else {
                       setState(() {
                         _category = newValue;

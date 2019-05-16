@@ -3,6 +3,7 @@ import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:spent/models/app_state.dart';
 import 'package:spent/models/expense.dart';
+import 'package:spent/presentation/expenses_chart_page.dart';
 import 'package:spent/presentation/expenses_list.dart';
 import 'package:spent/selectors/selectors.dart';
 
@@ -18,7 +19,7 @@ class ExpensesListContainer extends StatelessWidget {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            _buildTotal(vm),
+            _buildTotal(context, vm),
             Expanded(
               child: ExpensesList(
                 expenses: vm.expenses,
@@ -30,8 +31,16 @@ class ExpensesListContainer extends StatelessWidget {
     );
   }
 
-  Widget _buildTotal(_ViewModel vm) => Container(
-        padding: EdgeInsets.symmetric(vertical: 30),
+  Widget _buildTotal(BuildContext context, _ViewModel vm) => Container(
+      padding: EdgeInsets.symmetric(vertical: 30),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ExpensesChartPage(expenses: vm.expenses)));
+        },
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
           decoration: BoxDecoration(
@@ -42,7 +51,7 @@ class ExpensesListContainer extends StatelessWidget {
             style: TextStyle(fontSize: 18),
           ),
         ),
-      );
+      ));
 }
 
 class _ViewModel {
